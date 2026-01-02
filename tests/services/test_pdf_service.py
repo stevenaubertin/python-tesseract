@@ -56,24 +56,24 @@ class TestPDFToImageService:
         assert "PDF file not found" in str(exc_info.value)
     
     @pytest.mark.skipif(
-        not Path("SO-90328.pdf").exists(),
+        not Path("data/SO-90328.pdf").exists(),
         reason="Test PDF file not available"
     )
     def test_convert_pdf_to_images_returns_error_old_poppler(self, service):
         """Test PDF conversion with old poppler (expected to fail gracefully)"""
         # This test expects to fail due to old Poppler version
         with pytest.raises(PDFConversionError) as exc_info:
-            service.convert_pdf_to_images("SO-90328.pdf")
+            service.convert_pdf_to_images("data/SO-90328.pdf")
         assert "No pages extracted" in str(exc_info.value)
     
     @pytest.mark.skipif(
-        not Path("SO-90328.pdf").exists(),
+        not Path("data/SO-90328.pdf").exists(),
         reason="Test PDF file not available"
     )
     def test_convert_single_page_returns_error_old_poppler(self, service):
         """Test single page conversion with old poppler"""
         with pytest.raises(PDFConversionError) as exc_info:
-            service.convert_single_page("SO-90328.pdf", page_number=1)
+            service.convert_single_page("data/SO-90328.pdf", page_number=1)
         assert "No pages extracted" in str(exc_info.value)
     
     def test_save_images(self, service):

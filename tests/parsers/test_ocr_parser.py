@@ -113,12 +113,12 @@ class TestTesseractOCRParser:
         reason="Tesseract not installed"
     )
     @pytest.mark.skipif(
-        not Path("test_output-000001.ppm").exists(),
+        not Path("data/test_output-000001.ppm").exists(),
         reason="Test PPM file not available"
     )
     def test_extract_text_from_real_document(self, parser):
         """Test extracting text from real document"""
-        text = parser.extract_text("test_output-000001.ppm")
+        text = parser.extract_text("data/test_output-000001.ppm")
         assert isinstance(text, str)
         assert len(text) > 0
         # Should contain some expected text from the invoice

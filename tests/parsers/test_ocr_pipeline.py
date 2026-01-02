@@ -135,12 +135,12 @@ class TestOCRPipeline:
         reason="Tesseract not installed"
     )
     @pytest.mark.skipif(
-        not Path("test_output-000001.ppm").exists(),
+        not Path("data/test_output-000001.ppm").exists(),
         reason="Test PPM file not available"
     )
     def test_process_real_image(self, pipeline):
         """Test processing real document image"""
-        text = pipeline.process_image("test_output-000001.ppm")
+        text = pipeline.process_image("data/test_output-000001.ppm")
         
         assert isinstance(text, str)
         assert len(text) > 100  # Should have substantial content
@@ -151,23 +151,23 @@ class TestOCRPipeline:
             pipeline.process_pdf("nonexistent.pdf")
     
     @pytest.mark.skipif(
-        not Path("SO-90328.pdf").exists(),
+        not Path("data/SO-90328.pdf").exists(),
         reason="Test PDF file not available"
     )
     def test_process_pdf_old_poppler(self, pipeline):
         """Test PDF processing with old poppler (expected to fail)"""
         # This test expects PDFConversionError due to old Poppler
         with pytest.raises(PDFConversionError):
-            pipeline.process_pdf("SO-90328.pdf", page_number=1)
+            pipeline.process_pdf("data/SO-90328.pdf", page_number=1)
     
     @pytest.mark.skipif(
-        not Path("SO-90328.pdf").exists(),
+        not Path("data/SO-90328.pdf").exists(),
         reason="Test PDF file not available"
     )
     def test_process_pdf_all_pages_old_poppler(self, pipeline):
         """Test processing all PDF pages with old poppler"""
         with pytest.raises(PDFConversionError):
-            pipeline.process_pdf("SO-90328.pdf")
+            pipeline.process_pdf("data/SO-90328.pdf")
     
     @pytest.mark.skipif(
         not Path(TESSERACT_CMD).exists(),
@@ -181,14 +181,14 @@ class TestOCRPipeline:
         assert len(text) > 0
     
     @pytest.mark.skipif(
-        not Path("SO-90328.pdf").exists(),
+        not Path("data/SO-90328.pdf").exists(),
         reason="Test PDF file not available"
     )
     def test_process_auto_detect_pdf(self, pipeline):
         """Test auto-detection of PDF file type"""
         # Expected to fail with old Poppler
         with pytest.raises(PDFConversionError):
-            pipeline.process("SO-90328.pdf")
+            pipeline.process("data/SO-90328.pdf")
     
     def test_process_file_not_found(self, pipeline):
         """Test auto-detect with non-existent file"""
@@ -289,13 +289,13 @@ class TestOCRPipelineIntegration:
         )
     
     @pytest.mark.skipif(
-        not Path(TESSERACT_CMD).exists() or not Path("test_output-000001.ppm").exists(),
+        not Path(TESSERACT_CMD).exists() or not Path("data/test_output-000001.ppm").exists(),
         reason="Tesseract or test file not available"
     )
     def test_end_to_end_image_processing(self, pipeline):
         """Test complete workflow: image file -> text extraction"""
         # Process image
-        text = pipeline.process("test_output-000001.ppm")
+        text = pipeline.process("data/test_output-000001.ppm")
         
         # Verify result
         assert isinstance(text, str)
@@ -305,14 +305,14 @@ class TestOCRPipelineIntegration:
         assert any(word in text for word in ["Vergers", "commande", "Total"])
     
     @pytest.mark.skipif(
-        not Path(TESSERACT_CMD).exists() or not Path("test_output-000001.ppm").exists(),
+        not Path(TESSERACT_CMD).exists() or not Path("data/test_output-000001.ppm").exists(),
         reason="Tesseract or test file not available"
     )
     def test_end_to_end_with_confidence_filter(self, pipeline):
         """Test complete workflow with confidence filtering"""
         # Process with high confidence threshold
         result = pipeline.process(
-            "test_output-000001.ppm",
+            "data/test_output-000001.ppm",
             min_confidence=80.0
         )
         
