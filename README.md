@@ -44,11 +44,19 @@ A production-ready, modular OCR system for extracting text from PDFs and images 
 - **macOS**: `brew install poppler`
 - **Linux**: `sudo apt-get install poppler-utils`
 
-### Install Python Dependencies
+### Install the Package
+
+**Option 1: Install from PyPI (Recommended)**
+
+```bash
+pip install python-tesseract-ocr
+```
+
+**Option 2: Install from Source**
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/stevenaubertin/python-tesseract.git
 cd python-tesseract
 
 # Create virtual environment
@@ -60,8 +68,17 @@ venv\Scripts\activate
 # macOS/Linux:
 source venv/bin/activate
 
-# Install dependencies
-pip install -r requirements.txt
+# Install in editable mode (for development)
+pip install -e .
+
+# Or install normally
+pip install .
+```
+
+**Option 3: Install with development dependencies**
+
+```bash
+pip install "python-tesseract-ocr[dev]"
 ```
 
 ## 🎯 Quick Start
@@ -450,11 +467,53 @@ See `requirements.txt` for complete dependencies.
 
 ## 📄 License
 
-[Your License Here]
+MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🤝 Contributing
 
 This is a production-ready template. Feel free to extend and customize for your needs.
+
+## 📦 Building and Publishing (For Maintainers)
+
+### Building the Package
+
+```bash
+# Install build tools
+pip install build
+
+# Build the package
+python -m build
+
+# This creates:
+# - dist/python-tesseract-ocr-1.0.0.tar.gz (source distribution)
+# - dist/python_tesseract_ocr-1.0.0-py3-none-any.whl (wheel)
+```
+
+### Publishing to PyPI
+
+```bash
+# Install twine
+pip install twine
+
+# Upload to TestPyPI (for testing)
+python -m twine upload --repository testpypi dist/*
+
+# Upload to PyPI (production)
+python -m twine upload dist/*
+```
+
+### Local Testing
+
+```bash
+# Install locally in editable mode
+pip install -e .
+
+# Run tests
+pytest
+
+# Test import
+python -c "from src import OCRPipeline; print('Success!')"
+```
 
 ## 📞 Support
 
