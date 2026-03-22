@@ -107,20 +107,20 @@ class OCRPipeline:
         
         try:
             # Convert PDF to images
-            if page_number:
+            if page_number is not None:
                 images = [self.pdf_service.convert_single_page(pdf_path, page_number)]
             else:
                 images = self.pdf_service.convert_pdf_to_images(pdf_path)
-            
+
             # Process each image
             results = []
             for idx, image in enumerate(images, start=1):
                 logger.debug(f"Processing page {idx}/{len(images)}")
                 result = self.process_image(image, extract_data, min_confidence)
                 results.append(result)
-            
+
             # Return single result or list
-            if page_number:
+            if page_number is not None:
                 return results[0]
             else:
                 return results
@@ -158,6 +158,6 @@ class OCRPipeline:
             return self.process_pdf(input_path, extract_data, page_number, min_confidence)
         else:
             # Treat as image
-            if page_number:
+            if page_number is not None:
                 logger.warning(f"page_number parameter ignored for image input: {input_path}")
             return self.process_image(input_path, extract_data, min_confidence)

@@ -41,7 +41,7 @@ def main():
             images,
             output_dir,
             base_name="page",
-            format="PNG"
+            image_format="PNG"
         )
         
         print(f"\nSaved {len(saved_paths)} images to {output_dir}/")

@@ -19,7 +19,7 @@ class OCRError(Exception):
 
 class TesseractOCRParser:
     """Parser for extracting text from images using Tesseract OCR"""
-    
+
     def __init__(
         self,
         tesseract_cmd: Optional[str] = None,
@@ -28,22 +28,25 @@ class TesseractOCRParser:
     ):
         """
         Initialize Tesseract OCR Parser.
-        
+
         Args:
             tesseract_cmd: Path to tesseract executable (optional)
             tessdata_prefix: Path to tessdata directory (optional)
             lang: Language code for OCR (default: 'eng')
         """
+        self.tesseract_cmd = tesseract_cmd
+        self.tessdata_prefix = tessdata_prefix
+        self.lang = lang
+
         if tesseract_cmd:
             pytesseract.pytesseract.tesseract_cmd = tesseract_cmd
             logger.info(f"Tesseract command set to: {tesseract_cmd}")
-        
+
         if tessdata_prefix:
             import os
             os.environ['TESSDATA_PREFIX'] = tessdata_prefix
             logger.info(f"TESSDATA_PREFIX set to: {tessdata_prefix}")
-        
-        self.lang = lang
+
         logger.info(f"TesseractOCRParser initialized with language: {lang}")
     
     def _load_image(self, image_source: Union[str, Path, Image.Image]) -> Image.Image:
@@ -105,6 +108,9 @@ class TesseractOCRParser:
             logger.debug(f"Extracted {len(text)} characters")
             return text.strip()
             
+        except pytesseract.TesseractNotFoundError as e:
+            logger.error(f"Tesseract not found: {e}")
+            raise OCRError(f"Tesseract not found: {e}") from e
         except pytesseract.TesseractError as e:
             logger.error(f"Tesseract OCR failed: {e}")
             raise OCRError(f"OCR processing failed: {e}") from e
@@ -148,13 +154,16 @@ class TesseractOCRParser:
             
             # Calculate statistics
             text_elements = sum(1 for t in data['text'] if t.strip())
-            valid_conf = [int(c) for c in data['conf'] if int(c) > 0]
+            valid_conf = [c_int for c in data['conf'] if (c_int := int(c)) > 0]
             avg_confidence = sum(valid_conf) / len(valid_conf) if valid_conf else 0
             
             logger.info(f"Extracted {text_elements} text elements, avg confidence: {avg_confidence:.2f}%")
             
             return data
             
+        except pytesseract.TesseractNotFoundError as e:
+            logger.error(f"Tesseract not found: {e}")
+            raise OCRError(f"Tesseract not found: {e}") from e
         except pytesseract.TesseractError as e:
             logger.error(f"Tesseract data extraction failed: {e}")
             raise OCRError(f"OCR data extraction failed: {e}") from e

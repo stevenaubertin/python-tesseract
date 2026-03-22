@@ -12,9 +12,9 @@ def main():
     """Demonstrate advanced OCR features."""
     
     # Initialize pipeline
+    # On Windows, you may need to specify tesseract_cmd path.
+    # On Linux/macOS, tesseract is typically found on PATH automatically.
     pipeline = OCRPipeline(
-        tesseract_cmd=r'C:\Program Files\Tesseract-OCR\tesseract.exe',
-        tessdata_prefix=r'C:\Program Files\Tesseract-OCR\tessdata',
         dpi=300,
         lang='eng'
     )

@@ -92,7 +92,7 @@ class TestPDFToImageService:
                 test_images,
                 output_dir,
                 base_name="test",
-                format="PNG"
+                image_format="PNG"
             )
             
             # Verify
@@ -135,7 +135,7 @@ class TestPDFToImageService:
                     test_image,
                     tmpdir,
                     base_name="img",
-                    format=fmt
+                    image_format=fmt
                 )
                 
                 assert saved_paths[0].suffix.lower() == f'.{fmt.lower()}'
