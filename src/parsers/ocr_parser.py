@@ -148,7 +148,7 @@ class TesseractOCRParser:
             
             # Calculate statistics
             text_elements = sum(1 for t in data['text'] if t.strip())
-            valid_conf = [int(c) for c in data['conf'] if int(c) > 0]
+            valid_conf = [c_int for c in data['conf'] if (c_int := int(c)) > 0]
             avg_confidence = sum(valid_conf) / len(valid_conf) if valid_conf else 0
             
             logger.info(f"Extracted {text_elements} text elements, avg confidence: {avg_confidence:.2f}%")

@@ -24,17 +24,17 @@ def pytest_configure(config):
 @pytest.fixture(scope="session")
 def tesseract_available():
     """Check if Tesseract is available"""
-    tesseract_path = Path(r'C:\Program Files\Tesseract-OCR\tesseract.exe')
-    return tesseract_path.exists()
+    import shutil
+    return shutil.which('tesseract') is not None
 
 
 @pytest.fixture(scope="session")
 def test_pdf_available():
     """Check if test PDF file is available"""
-    return Path("SO-90328.pdf").exists()
+    return Path("data/SO-90328.pdf").exists()
 
 
 @pytest.fixture(scope="session")
 def test_image_available():
     """Check if test image file is available"""
-    return Path("test_output-000001.ppm").exists()
+    return Path("data/test_output-000001.ppm").exists()

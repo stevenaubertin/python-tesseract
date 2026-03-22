@@ -80,9 +80,9 @@ class PDFToImageService:
             logger.info(f"Successfully converted {len(images)} page(s)")
             return images
             
+        except PDFConversionError:
+            raise
         except Exception as e:
-            if isinstance(e, PDFConversionError):
-                raise
             logger.error(f"PDF conversion failed: {e}")
             raise PDFConversionError(f"Failed to convert PDF: {e}") from e
     
