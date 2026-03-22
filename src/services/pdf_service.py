@@ -121,29 +121,29 @@ class PDFToImageService:
         images: List[Image.Image],
         output_dir: str | Path,
         base_name: str = "page",
-        format: str = "PNG"
+        image_format: str = "PNG"
     ) -> List[Path]:
         """
         Save images to disk.
-        
+
         Args:
             images: List of PIL Images
             output_dir: Output directory
             base_name: Base name for output files
-            format: Image format (PNG, JPEG, etc.)
-            
+            image_format: Image format (PNG, JPEG, etc.)
+
         Returns:
             List of saved file paths
         """
         output_dir = Path(output_dir)
         output_dir.mkdir(parents=True, exist_ok=True)
-        
+
         saved_paths = []
         for idx, image in enumerate(images, start=1):
-            output_path = output_dir / f"{base_name}_{idx:03d}.{format.lower()}"
-            image.save(output_path, format.upper())
+            output_path = output_dir / f"{base_name}_{idx:03d}.{image_format.lower()}"
+            image.save(output_path, image_format.upper())
             saved_paths.append(output_path)
             logger.debug(f"Saved: {output_path}")
-        
+
         logger.info(f"Saved {len(saved_paths)} image(s) to {output_dir}")
         return saved_paths

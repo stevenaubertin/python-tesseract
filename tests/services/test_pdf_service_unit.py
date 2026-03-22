@@ -234,7 +234,7 @@ class TestSaveImages:
         mock_images = [Mock(spec=Image.Image)]
         
         service = PDFToImageService()
-        result = service.save_images(mock_images, 'output_dir', format='JPEG')
+        result = service.save_images(mock_images, 'output_dir', image_format='JPEG')
         
         assert len(result) == 1
         assert str(result[0]).endswith('page_001.jpeg')
